@@ -57,13 +57,37 @@ app.post('/v1/controle-musicas/musica', cors(), bodyParserjson, async function(r
     response.json(resultMusica)
 })
 
-app.get('/v1/controle-musicas/musica', cors(), async function(request, response){
+app.get('/v1/controle-musicas/musicaLista', cors(), async function(request, response){
     let resultMusica = await controllerMusica.listarMusica()
 
     response.status(resultMusica.status_code)
     response.json(resultMusica)
 } )
 
+app.get('/v1/controle-musicas/musicaFiltroID/:id', cors(), async function(request, response) {
+    let id = request.params.id;  
+
+    let filtroMusicas = musicas.listarMusica(id);  
+
+    if (filtroMusicas) {
+        response.status(200).json(filtroMusicas);  
+    } else {
+        response.status(404).json({ 'status': 404, 'message': 'Música não encontrada' });  
+    }
+});
+
+app.delete('/v1/controle-musicas/deletarMusica/:id', cors(), async function (request, response) {
+    let id = request.params.id;
+
+    let deletarMusicas = musicas.deleteMusica(id); 
+    
+    if (deletarMusicas){
+        response.status(200).json(deletarMusicas);
+    } else {
+        response.status(404).json({  'status': 404, 'message': 'Não foi posível deletar a música solicitada'})
+    }
+
+})
 
 app.listen(8080, function(){
     console.log('API aguardando requisições...')

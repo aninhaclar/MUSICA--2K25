@@ -51,9 +51,18 @@ const updateMusica = async function(){
 }
 
 //Função para excluir uma música existente
-const deleteMusica = async function () {
-    
-}
+const deleteMusica = (id) => {
+    let musicas = lerMusicas();
+    const musicaIndex = musicas.findIndex(musica => musica.id === parseInt(id));
+
+    if (musicaIndex !== -1) {
+        const [musicaDeletada] = musicas.splice(musicaIndex, 1);
+        salvarMusicas(musicas);  // Salva o novo estado do arquivo após deletar
+        return musicaDeletada;
+    }
+    return null;
+};
+
 
 //Função para retornar todas as músicas do BD
 const selectAllMusica = async function () {
