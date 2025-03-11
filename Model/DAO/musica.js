@@ -46,22 +46,44 @@ else
 }
 
 //Função para atualizar uma música existente
-const updateMusica = async function(){
+const updateMusica = async function(musica){
+    try {
+        let sql = `Update tbl_musica set nome='${musica.nome}'',
+                                         duracao = '${musica.duracao}'', 
+                                         data_lancamento = '${musica.data_lancamento}'', 
+                                         letra = '${musica.letra}'', 
+                                         link = '${musica.link}'
+                                    where id = ${musica.id} `
 
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        if(result)
+            return true
+        else
+        return false 
+    
+    } catch (error) {
+        return false
+    }
 }
 
-//Função para excluir uma música existente
-const deleteMusica = (id) => {
-    let musicas = lerMusicas();
-    const musicaIndex = musicas.findIndex(musica => musica.id === parseInt(id));
 
-    if (musicaIndex !== -1) {
-        const [musicaDeletada] = musicas.splice(musicaIndex, 1);
-        salvarMusicas(musicas);  // Salva o novo estado do arquivo após deletar
-        return musicaDeletada;
+//Função para excluir uma música existente
+const deleteMusica = async function(id){
+    try {
+        let sql = `delete from tbl_musica where id = ${id}`
+
+        let resultMusica = await prisma.$executeRawUnsafe(sql)
+
+        if(resultMusica)
+            return true //Retorna um Boolean true indicando a exclusão da música
+        else
+            return false
+
+    } catch (error) {
+        return false
     }
-    return null;
-};
+}
 
 
 //Função para retornar todas as músicas do BD
@@ -83,8 +105,20 @@ const selectAllMusica = async function () {
 }
 
 //Função para buscar uma música pelo ID
-const selectByIdMusica = async function(){
+const selectByIdMusica = async function(id){
+    try {
+        let sql = `select *from tbl_musica where id = ${id}`
 
+        let result =  await prisma.$queryRawUnsafe(sql)
+
+        if(result)
+            return result
+        else 
+        return false
+    } catch (error) {
+        return false
+
+    }
 }
 
 module.exports ={

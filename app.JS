@@ -64,31 +64,45 @@ app.get('/v1/controle-musicas/musicaLista', cors(), async function(request, resp
     response.json(resultMusica)
 } )
 
+
 app.get('/v1/controle-musicas/musicaFiltroID/:id', cors(), async function(request, response) {
-    let id = request.params.id;  
+    let idMusica = request.params.id
 
-    let filtroMusicas = musicas.listarMusica(id);  
+    let resultMusica = await controllerMusica.buscarMusica(idMusica);  
 
-    if (filtroMusicas) {
-        response.status(200).json(filtroMusicas);  
-    } else {
-        response.status(404).json({ 'status': 404, 'message': 'Música não encontrada' });  
-    }
+        response.status(resultMusica.status_code)
+        response.json(resultMusica) 
+    
 });
 
-app.delete('/v1/controle-musicas/deletarMusica/:id', cors(), async function (request, response) {
-    let id = request.params.id;
+app.delete('/v1/controle-musicas/musica/:id', cors(), async function(request, response){
 
-    let deletarMusicas = musicas.deleteMusica(id); 
-    
-    if (deletarMusicas){
-        response.status(200).json(deletarMusicas);
-    } else {
-        response.status(404).json({  'status': 404, 'message': 'Não foi posível deletar a música solicitada'})
-    }
+    //Recebe o ID
+    let idMusica = request.params.id
 
+    //Chama a função
+    let resultMusica = await controllerMusica.excluirMusica(idMusica)
+
+    response.status(resultMusica.status_code)
+    response.json(resultMusica)
 })
 
+app.put('/v1/controle-musicas/musica/:id', cors(), bodyParserjson, async function (request, response){
+
+    //Recebe o contentType da requisição
+    let contentType = request.headers['content-type']
+    //Recebe o ID da musica
+    let idMusica = request.params.id
+
+    //Reecebe os dados do corpo da requisição
+    let dadosBody = request.body
+
+    //Chama a função e encaminha os argumentos de ID, body e contentType
+    let resultMusica = await controllerMusica.atualizarMusica(idMusica, dadosBody, contentType)
+
+    response.status(resultMusica.status_code)
+    response.json(resultMusica)
+})
 app.listen(8080, function(){
     console.log('API aguardando requisições...')
 })
