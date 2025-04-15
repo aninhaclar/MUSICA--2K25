@@ -1,8 +1,10 @@
--- Criação do DATABASE
+
+
 create database db_controle_musicas_aa;
 
--- #Ativa o database a ser utilizado
 use db_controle_musicas_aa;
+
+show tables
 
 create table tbl_musica (
       id     int not null primary key auto_increment,
@@ -12,8 +14,10 @@ create table tbl_musica (
       letra        text,
       link     varchar(200)
       );
-
-       create table tbl_reproducao (
+      
+     
+     
+    create table tbl_reproducao (
       id     int not null primary key auto_increment,
       usuario    varchar(100) not null,
       musica      time not null,
@@ -65,11 +69,6 @@ create table tbl_musica (
 	  data_criacao date,
 	  criador varchar(80)
 	  )
-      
-      show tables;
-      
-      drop table tbl_musica;
-      
-      select * from tbl_musica;
-      
-      
+
+select * from db_controle_musicas_aa
+ 

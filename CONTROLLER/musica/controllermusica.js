@@ -8,7 +8,9 @@
 
 //Import do arquivo de mensagens e status code
 const message = require('../../Modulo/config.js')
-const musicaDAO = require('../../Model/DAO/musica.js')
+const musicaDAO = require('../../Model/DAO/musica.js'); 
+
+
 
 //Função para inserir uma nova música
 const inserirMusica = async function (musica, contentType) {
@@ -185,10 +187,46 @@ const buscarMusica = async function (id) {
     }
 }
 
+
+const insertGravadora = async function (gravadora, contentType) {
+    
+    try {
+
+        if(String(contentType).toLowerCase() == 'application/json')
+        {
+        if (gravadora.nome            == ''    ||  gravadora.nome            == null || gravadora.nome              == undefined  || gravadora.nome.lenght            > 100 ||
+            gravadora.ano_fundacao    == ''    ||  gravadora.ano_fundacao    == null ||  gravadora.ano_fundacao     == undefined  ||          gravadora.data_lancamento.lenght > 10        
+  
+      )
+      {
+          return message.ERROR_REQUIRED_FIELDS //Status code 400
+      }else{
+          //encaminhando os dados da musica para o DAO realizar o insert no BD
+          let resultGravadora = await musicaDAO.insertGravadora(gravadora) 
+  
+          if(resultGravadora)
+              return message.SUCESS_CREATED_ITEM //Status code 201
+          else
+          return message.ERROR_INTERNAL_SERVER_MODEL  //Status code 500 
+        }
+    }else{
+        return message.ERROR_CONTENT_TYPE //415
+    }
+    } catch (error) {
+        console.log(error)
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER //Status code 500 
+
+    }
+    
+ 
+
+}
+
 module.exports = {
     inserirMusica,
     atualizarMusica,
     excluirMusica,
     listarMusica,
-    buscarMusica
+    buscarMusica,
+    insertGravadora
 }
