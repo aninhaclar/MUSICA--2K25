@@ -30,14 +30,16 @@ const insertAlbum = async function (album) {
 // Função para atualizar um álbum existente
 const updateAlbum = async function (album) {
   try {
-    let sql = `UPDATE tbl_album SET nome='${album.nome}', data_lancamento='${album.data_lancamento}', gravadora_id=${album.gravadora_id}
+    let sql = `UPDATE tbl_album 
+               SET titulo='${album.titulo}', 
+                   ano_lancamento='${album.ano_lancamento}', 
+                   artista='${album.artista}' 
                WHERE id = ${album.id}`;
 
     let result = await prisma.$executeRawUnsafe(sql);
-
-    if (result) return true;
-    else return false;
+    return result ? true : false;
   } catch (error) {
+    console.log('Erro no updateAlbum:', error); // debug
     return false;
   }
 };

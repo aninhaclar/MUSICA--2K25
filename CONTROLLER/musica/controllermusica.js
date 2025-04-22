@@ -6,14 +6,12 @@
  * Versão:   1.0
 *****************************************************************************************/
 
-//Import do arquivo de mensagens e status code
 const message = require('../../Modulo/config.js')
 const musicaDAO = require('../../Model/DAO/musica.js'); 
 
 
 
-//Função para inserir uma nova música
-const inserirMusica = async function (musica, contentType) {
+const insertMusica = async function (musica, contentType) {
     
     try {
 
@@ -29,7 +27,6 @@ const inserirMusica = async function (musica, contentType) {
       {
           return message.ERROR_REQUIRED_FIELDS //Status code 400
       }else{
-          //encaminhando os dados da musica para o DAO realizar o insert no BD
           let resultMusica = await musicaDAO.insertMusica(musica) 
   
           if(resultMusica)
@@ -50,7 +47,6 @@ const inserirMusica = async function (musica, contentType) {
 
 }
 
-//Função para atualizar uma  música
 const atualizarMusica = async function (id, musica, contentType) {
     try {
         if(String(contentType).toLowerCase() == 'application/json')
@@ -94,7 +90,6 @@ const atualizarMusica = async function (id, musica, contentType) {
     }
 }
 
-//Função para excluir uma  música
 const excluirMusica = async function (id) {
     try {
         if(id == '' || id == undefined || id == null || isNaN(id)){
@@ -126,7 +121,6 @@ const excluirMusica = async function (id) {
     }
 }
 
-// Função para retornar uma lista de músicas
 const listarMusica = async function () {
 try {
 
@@ -155,7 +149,6 @@ try {
 }
 }
 
-// Função para retornar uma música pelo ID
 const buscarMusica = async function (id) {
     try {
         if(id  == '' || id  == undefined || id  == null || isNaN(id)){
@@ -201,7 +194,7 @@ const insertGravadora = async function (gravadora, contentType) {
       {
           return message.ERROR_REQUIRED_FIELDS //Status code 400
       }else{
-          //encaminhando os dados da musica para o DAO realizar o insert no BD
+
           let resultGravadora = await musicaDAO.insertGravadora(gravadora) 
   
           if(resultGravadora)
@@ -223,7 +216,7 @@ const insertGravadora = async function (gravadora, contentType) {
 }
 
 module.exports = {
-    inserirMusica,
+    insertMusica,
     atualizarMusica,
     excluirMusica,
     listarMusica,

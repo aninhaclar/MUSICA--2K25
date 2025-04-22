@@ -17,3 +17,8 @@ model tbl_teste {
   id Int @id @default(autoincrement())
   nome String
 }
+
+model Genero {
+  id   Int    @id @default(autoincrement())
+  nome String
+}

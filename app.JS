@@ -31,7 +31,7 @@ const controllerArtista = require('./CONTROLLER/musica/controllerartistas');
 const controllerGenero = require('./CONTROLLER/musica/controllergenero');
 const controllerPlaylist = require('./CONTROLLER/musica/controllerplaylist');
 
-//Cria um objeto para o body do tipo JSON
+
 const bodyParserjson = bodyParser.json();
 
 const app = express();
@@ -48,7 +48,7 @@ app.use((request, response, next) => {
 app.post('/v1/controle-musicas/musica', cors(), bodyParserjson, async function(request,response) {
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
-    let resultMusica = await controllerMusica.inserirMusica(dadosBody, contentType);
+    let resultMusica = await controllerMusica.insertMusica(dadosBody, contentType);
     response.status(resultMusica.status_code);
     response.json(resultMusica);
 });
@@ -86,7 +86,7 @@ app.put('/v1/controle-musicas/musica/:id', cors(), bodyParserjson, async functio
 app.post('/v1/controle-gravadoras/gravadora', cors(), bodyParserjson, async function(request, response) {
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
-    let resultGravadora = await controllerGravadora.inserirGravadora(dadosBody, contentType);
+    let resultGravadora = await controllerGravadora.insertGravadora(dadosBody, contentType);
     response.status(resultGravadora.status_code);
     response.json(resultGravadora);
 });
@@ -162,7 +162,7 @@ app.put('/v1/controle-albuns/albumupdate/:id', cors(), bodyParserjson, async fun
 app.post('/v1/controle-artistas/artista', cors(), bodyParserjson, async function(request, response) {
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
-    let resultArtista = await controllerArtista.inserirArtista(dadosBody, contentType);
+    let resultArtista = await controllerArtista.insertArtista(dadosBody, contentType);
     response.status(resultArtista.status_code);
     response.json(resultArtista);
 });
@@ -206,7 +206,7 @@ app.post('/v1/controle-generos/genero', cors(), bodyParserjson, async function(r
 });
 
 app.get('/v1/controle-generos/generoLista', cors(), async function(request, response) {
-    let resultGenero = await controllerGenero.listarGenero();
+    let resultGenero = await controllerGenero.listarGeneros();
     response.status(resultGenero.status_code);
     response.json(resultGenero);
 });
@@ -238,7 +238,7 @@ app.put('/v1/controle-generos/genero/:id', cors(), bodyParserjson, async functio
 app.post('/v1/controle-playlists/playlist', cors(), bodyParserjson, async function(request, response) {
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
-    let resultPlaylist = await controllerPlaylist.inserirPlaylist(dadosBody, contentType);
+    let resultPlaylist = await controllerPlaylist.insertPlaylist(dadosBody, contentType);
     response.status(resultPlaylist.status_code);
     response.json(resultPlaylist);
 });

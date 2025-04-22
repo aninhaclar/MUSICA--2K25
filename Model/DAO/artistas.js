@@ -1,89 +1,115 @@
-/************************************************************************************************ 
- * Objetivo: Criar o CRUD de dados na tabela de artista no Banco de dados.
- * Data:     15.04.2025
+/*****************************************************************************************
+ * Objetivo: Criar o CRUD de dados na tabela de artistas no Banco de dados.
+ * Data:     11.02.2025
  * Autor:    Ana Pires 
  * Versão:   1.0
-************************************************************************************************/
+*****************************************************************************************/
 
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+//Import da biblioteca do prisma client para realizar as ações no BD
+const { PrismaClient } = require('@prisma/client')
 
-// Função para inserir um novo artista
-const insertArtista = async function (artista) {
-  try {
-    let sql = `INSERT INTO tbl_artista (nome, data_nascimento, gravadora_id)
-                VALUES ('${artista.nome}', '${artista.data_nascimento}', ${artista.gravadora_id})`;
+//Instância da classe do Prisma Client
+const prisma = new PrismaClient()
 
-    let result = await prisma.$executeRawUnsafe(sql);
+//Função para inserir um novo artista
+const insertArtista = async function(artista) {
+    try {
+        let sql = `INSERT INTO tbl_artistas (nome, nacionalidade, data_nascimento)
+                   VALUES ('${artista.nome}', 
+                           '${artista.nacionalidade}', 
+                           '${artista.data_nascimento}')`
 
-    if (result) return true;
-    else return false;
-  } catch (error) {
-    return false;
-  }
-};
+        // Executa o script SQL no banco de dados e guarda o resultado (true or false)
+        let result = await prisma.$executeRawUnsafe(sql);
 
-// Função para atualizar um artista existente
-const updateArtista = async function (artista) {
-  try {
-    let sql = `UPDATE tbl_artista SET nome='${artista.nome}', data_nascimento='${artista.data_nascimento}', gravadora_id=${artista.gravadora_id}
-               WHERE id = ${artista.id}`;
+        if (result)
+            return true; // Sucesso na inserção
+        else 
+            return false; // Fase -> Bug no banco de dados
+    } catch (error) {
+        console.error('Erro na inserção do artista:', error);
+        return false; // Fase -> Bug de programação
+    }
+}
 
-    let result = await prisma.$executeRawUnsafe(sql);
+//Função para atualizar um artista existente
+const updateArtista = async function(artista) {
+    try {
+        let sql = `UPDATE tbl_artistas SET nome = '${artista.nome}', 
+                                             nacionalidade = '${artista.nacionalidade}', 
+                                             data_nascimento = '${artista.data_nascimento}'
+                   WHERE id = ${artista.id}`
 
-    if (result) return true;
-    else return false;
-  } catch (error) {
-    return false;
-  }
-};
+        let result = await prisma.$executeRawUnsafe(sql);
 
-// Função para excluir um artista existente
-const deleteArtista = async function (id) {
-  try {
-    let sql = `DELETE FROM tbl_artista WHERE id = ${id}`;
+        if (result)
+            return true; // Sucesso na atualização
+        else 
+            return false; // Fase -> Bug no banco de dados
+    
+    } catch (error) {
+        console.error('Erro na atualização do artista:', error);
+        return false; // Fase -> Bug de programação
+    }
+}
 
-    let resultArtista = await prisma.$executeRawUnsafe(sql);
+//Função para excluir um artista existente
+const deleteArtista = async function(id) {
+    try {
+        let sql = `DELETE FROM tbl_artistas WHERE id = ${id}`;
 
-    if (resultArtista) return true;
-    else return false;
-  } catch (error) {
-    return false;
-  }
-};
+        let resultArtista = await prisma.$executeRawUnsafe(sql);
 
-// Função para retornar todos os artistas do BD
-const selectAllArtista = async function () {
-  try {
-    let sql = 'SELECT * FROM tbl_artista ORDER BY id DESC';
+        if (resultArtista)
+            return true; // Sucesso na exclusão do artista
+        else 
+            return false; // Fase -> Bug no banco de dados
 
-    let result = await prisma.$queryRawUnsafe(sql);
+    } catch (error) {
+        console.error('Erro na exclusão do artista:', error);
+        return false; // Fase -> Bug de programação
+    }
+}
 
-    if (result) return result;
-    else return false;
-  } catch (error) {
-    return false;
-  }
-};
+//Função para retornar todos os artistas do BD
+const selectAllArtista = async function() {
+    try {
+        // Script SQL para selecionar todos os artistas
+        let sql = 'SELECT * FROM tbl_artistas ORDER BY id DESC';
 
-// Função para buscar um artista pelo ID
-const selectByIdArtista = async function (id) {
-  try {
-    let sql = `SELECT * FROM tbl_artista WHERE id = ${id}`;
+        let result = await prisma.$queryRawUnsafe(sql);
 
-    let result = await prisma.$queryRawUnsafe(sql);
+        if (result)
+            return result; // Retorna os dados dos artistas
+        else 
+            return false; // Fase -> Nenhum dado encontrado
+    } catch (error) {
+        console.error('Erro ao listar artistas:', error);
+        return false; // Fase -> Bug de programação
+    }
+}
 
-    if (result) return result;
-    else return false;
-  } catch (error) {
-    return false;
-  }
-};
+//Função para buscar um artista pelo ID
+const selectByIdArtista = async function(id) {
+    try {
+        let sql = `SELECT * FROM tbl_artistas WHERE id = ${id}`;
+
+        let result = await prisma.$queryRawUnsafe(sql);
+
+        if (result)
+            return result; // Retorna o artista encontrado
+        else 
+            return false; // Fase -> Artista não encontrado
+    } catch (error) {
+        console.error('Erro ao buscar artista:', error);
+        return false; // Fase -> Bug de programação
+    }
+}
 
 module.exports = {
-  insertArtista,
-  updateArtista,
-  deleteArtista,
-  selectAllArtista,
-  selectByIdArtista,
-};
+    insertArtista,
+    updateArtista,
+    deleteArtista,
+    selectAllArtista,
+    selectByIdArtista
+}
