@@ -78,9 +78,14 @@ app.put('/v1/controle-musicas/musica/:id', cors(), bodyParserjson, async functio
     let idMusica = request.params.id;
     let dadosBody = request.body;
     let resultMusica = await controllerMusica.atualizarMusica(idMusica, dadosBody, contentType);
-    response.status(resultMusica.status_code);
-    response.json(resultMusica);
+
+    if (!resultMusica || typeof resultMusica.status_code !== 'number') {
+        return response.status(500).json({ erro: 'Erro ao processar a música.' });
+    }
+
+    return response.status(resultMusica.status_code).json(resultMusica);
 });
+
 
 // Endpoints da Gravadora
 app.post('/v1/controle-gravadoras/gravadora', cors(), bodyParserjson, async function(request, response) {
