@@ -25,11 +25,11 @@ const bodyParser = require('body-parser');
 
 //Import das controllers do projeto
 const controllerMusica = require('./CONTROLLER/musica/controllermusica');
-const controllerGravadora = require('./CONTROLLER/musica/controllergravadora');
-const controllerAlbum = require('./CONTROLLER/musica/controlleralbum');
-const controllerArtista = require('./CONTROLLER/musica/controllerartistas');
-const controllerGenero = require('./CONTROLLER/musica/controllergenero');
-const controllerPlaylist = require('./CONTROLLER/musica/controllerplaylist');
+const controllerGravadora = require('./CONTROLLER/gravadora/controllergravadora');
+const controllerAlbum = require('./CONTROLLER/album/controlleralbum');
+const controllerArtista = require('./CONTROLLER/artista/controllerartistas');
+const controllerGenero = require('./CONTROLLER/genero/controllergenero');
+const controllerPlaylist = require('./CONTROLLER/playlist/controllerplaylist');
 
 
 const bodyParserjson = bodyParser.json();

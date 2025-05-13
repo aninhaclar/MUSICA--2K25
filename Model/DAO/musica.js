@@ -20,13 +20,18 @@ const insertMusica = async function(musica){
                                         duracao, 
                                         data_lancamento, 
                                         letra, 
-                                        link)
-                        values ('${musica.nome}',
-                                '${musica.duracao}',
-                                '${musica.data_lancamento}',
-                                '${musica.letra}',
-                                '${musica.link}'
-                        )`
+                                        link,
+                                        id_classificacao
+                                        )
+                                          values 
+                                        (
+                                          '${musica.nome}',
+                                          '${musica.duracao}',
+                                          '${musica.data_lancamento}',
+                                          '${musica.letra}',
+                                          '${musica.link}',
+                                          '${musica.id-classificacao}'
+                                         )`
 
 
 //Tem que colocar o async se não o AWAIT não funciona. / 
@@ -52,7 +57,8 @@ const updateMusica = async function(musica){
                                          duracao = '${musica.duracao}'', 
                                          data_lancamento = '${musica.data_lancamento}'', 
                                          letra = '${musica.letra}'', 
-                                         link = '${musica.link}'
+                                         link = '${musica.link}',
+                                         id_classificacao = '${musica.id_classificacao}'
                                     where id = ${musica.id} `
 
         let result = await prisma.$executeRawUnsafe(sql)
@@ -76,7 +82,7 @@ const deleteMusica = async function(id){
         let resultMusica = await prisma.$executeRawUnsafe(sql)
 
         if(resultMusica)
-            return true //Retorna um Boolean true indicando a exclusão da música
+            return true 
         else
             return false
 
@@ -96,7 +102,7 @@ const selectAllMusica = async function () {
         let result = await prisma.$queryRawUnsafe(sql)
 
     if(result)
-        return result //retorna os dados do banco
+        return result 
     else
     return false
     } catch (error) {
